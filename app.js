@@ -9,6 +9,7 @@ var busboy = require('connect-busboy');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var fileupload = require('./routes/fileupload');
+var banner = require('./routes/banner');
 // var mysql = require('mysql');
 var googl = require('goo.gl');
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/fileupload', fileupload);
+app.use('/banner', banner);
 
 
 // catch 404 and forward to error handler
@@ -41,11 +43,12 @@ app.use(function(req, res, next) {
 
 // error handlers
 //console.log("Current Date: " + moment().format());
+/*
 googl.shorten('http://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=106&oid=109&aid=0002914238')
 	.then(function (shortUrl) {
 	    console.log(shortUrl);
 	});
-
+*/
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
