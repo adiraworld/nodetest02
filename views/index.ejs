@@ -12,5 +12,19 @@
 		<input type="file" name="uploadFile" />
 		<input type="submit" name="upload" />
 	</form>
+	<br/>
+	<%if(table){ %>
+		<table border='1' width="50%">
+			<% table.forEach(function(value) { %>
+			<tr>
+				<td align='center'><%= value.filename %></td>
+				<td align='center'><%= value.type %></td>
+				<td align='center'><%= value.URL %></td>
+			</tr>
+			<% }) %>
+		</table>
+	<% } %>
+	
+
   </body>
 </html>

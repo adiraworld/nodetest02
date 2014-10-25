@@ -11,7 +11,7 @@ var users = require('./routes/users');
 var fileupload = require('./routes/fileupload');
 var banner = require('./routes/banner');
 // var mysql = require('mysql');
-var googl = require('goo.gl');
+
 
 var app = express();
 
@@ -42,6 +42,7 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+
 //console.log("Current Date: " + moment().format());
 /*
 googl.shorten('http://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=106&oid=109&aid=0002914238')
