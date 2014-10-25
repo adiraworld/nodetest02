@@ -4,31 +4,51 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var mysql = require('mysql');
+var moment = require('moment');
+var path = require('path');
 
-
-
-/* GET home page. */
-router.get('/', function(req, res) {
-	console.log("FileUpload.js Start");
-
-	// bodyParser 없을 경우 req.files 에러 발생.
-	fs.readFile(req.files.uploadFile.path, function (error, data) { 
+router.post('/', function (req, res) {
+	var fstream;
+	req.pipe(req.busboy);
+	req.busboy.on('file', function (fieldname, file, filename){
+		console.log("Uploading: " + filename);
 		
-			// 저장할 파일 경로를 지정 합니다.
-			var filePath = __dirname + "\\files\\" + req.files.uploadFile.name;
-			// 파일 저장 및 에러처리
-			fs.writeFile(filePath, data, function (error) { 
-			if (error) {
-				console.log(error);
-			} else {
-				//res.redirect("back");
-				res.render('fileupload', { title: 'File Upload' });
-			}
+		// extract file extname & create image filename
+		var newImagefilename = moment().format() + path.extname(filename);
+		
+		//Path where image will be uploaded
+       // fstream = fs.createWriteStream(__dirname + '/img/' + filename);
+		fstream = fs.createWriteStream('..' + '/img/' + newImagefilename);
+        file.pipe(fstream);
+        fstream.on('close', function () {    
+            console.log("Upload Finished of " + newImagefilename);              
+            res.redirect('..');           //where to go next
+        });
+	});
+	
+	console.log(req.files); 
+	//res.send('ok'); 
+});
+
+function InsertImagePathIntoMysql(path, filetype){
+
+	var connection = mysql.createConnection({
+		  host     : 'localhost',
+		  user     : 'root',
+		  password : 'infra7525',
+		  database : 'fileupload'
 		});
+	
+	var query = 'INSERT INTO ImageList (Filename, ImgType, ShortURL) VALUES (?, ?, ?)';
+
+	connection.query(query, [path, filetype, 'google short'], function(err, results){
+		if(null != err)
+			console.log('mysql error: ' + err);
+		console.log('mysql result: ' + results);
 	});
 
-	
-});
+}
 
 module.exports = router;
 

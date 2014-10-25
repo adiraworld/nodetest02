@@ -4,11 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var busboy = require('connect-busboy');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var fileupload = require('./routes/fileupload');
-var upload = require('./routes/upload');
+// var mysql = require('mysql');
+var googl = require('goo.gl');
 
 var app = express();
 
@@ -22,17 +24,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(busboy());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('/fileupload', fileupload);
-app.route('/upload', upload);
 
-/*app.post('/fileupload', function (req, res) {
-	  console.log(req.files); 
-	  res.send('ok'); 
-	}); */
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -42,6 +40,11 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+//console.log("Current Date: " + moment().format());
+googl.shorten('http://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=106&oid=109&aid=0002914238')
+	.then(function (shortUrl) {
+	    console.log(shortUrl);
+	});
 
 // development error handler
 // will print stacktrace
