@@ -25,11 +25,12 @@ customEvent.on('Finish_googleShorten', function(res, Id, shortUrl){
 		  database : 'fileupload'
 		});
 	
-	var query_update = 'UPDATE ImageList SET ShortURL= :ShortURL WHERE IdImage = :IdImage';
+	var query_update = 'UPDATE ImageList SET ShortURL= ' + '"' + shortUrl + '"' + ' WHERE IdImage = ' + Id;
 	
-	connection.query("UPDATE posts SET title = :title", { title: "Hello MySQL" });
+	//connection.query("UPDATE posts SET title = :title", { title: "Hello MySQL" });
+	console.log('update query: ' + query_update);
 	
-	connection.query(query_update, {IdImage: Id, ShortURL: shortUrl}, function(err, results){
+	connection.query(query_update, function(err, results){
 		if(null != err){
 			console.log('update error: ' + err);
 			customEvent.emit('Backward');
