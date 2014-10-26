@@ -93,7 +93,7 @@ function InsertImagePathIntoMysql(res, Filename, filetype){
 	var query_insert = 'INSERT INTO ImageList (Filename, ImgType, ShortURL) VALUES (?, ?, ?)';
 	var query_select = 'SELECT IdImage FROM ImageList WHERE Filename = ?';
 
-	connection.query(query_insert, [Filename, filetype, 'google short'], function(err, results){
+	connection.query(query_insert, [Filename, filetype.substr(1,4), 'google short'], function(err, results){
 		if(null != err){
 			console.log('insert error: ' + err);
 			customEvent.emit('Backward');
