@@ -8,6 +8,7 @@ var mysql = require('mysql');
 var moment = require('moment');
 var path = require('path');
 var googl = require('goo.gl');
+var config = require('../config');
 
 var customEvent = new process.EventEmitter();
 
@@ -15,15 +16,11 @@ customEvent.on('Backward', function(res){
 	res.redirect('..');           //where to go next
 });
 
-// 업데이트 처리 방안 찾기
 
 customEvent.on('Finish_googleShorten', function(res, Id, shortUrl){
-	var connection = mysql.createConnection({
-		  host     : 'localhost',
-		  user     : 'root',
-		  password : 'infra7525',
-		  database : 'fileupload'
-		});
+	
+	var connection = mysql.createConnection(config.mysql);
+
 	
 	var query_update = 'UPDATE ImageList SET ShortURL= ' + '"' + shortUrl + '"' + ' WHERE IdImage = ' + Id;
 	
@@ -83,12 +80,7 @@ router.post('/', function (req, res) {
 
 function InsertImagePathIntoMysql(res, Filename, filetype){
 
-	var connection = mysql.createConnection({
-		  host     : 'localhost',
-		  user     : 'root',
-		  password : 'infra7525',
-		  database : 'fileupload'
-		});
+	var connection = mysql.createConnection(config.mysql);
 	
 	var query_insert = 'INSERT INTO ImageList (Filename, ImgType, ShortURL) VALUES (?, ?, ?)';
 	var query_select = 'SELECT IdImage FROM ImageList WHERE Filename = ?';
